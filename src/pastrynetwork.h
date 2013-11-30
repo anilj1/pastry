@@ -10,7 +10,6 @@
 
 #include "common.h"
 
-static int NodeIndex = 0;
 PastryNode* PastryNetwork[PS_NODES];
 
 // Function decelerations.

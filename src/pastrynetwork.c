@@ -12,6 +12,8 @@
 #include "pastrynode.h"
 #include "pastrynetwork.h"
 
+static int NodeIndex = 0;
+
 // Routing table row index.
 const int RT_COL_1 = 0;
 const int RT_COL_2 = 1;
@@ -24,9 +26,9 @@ int PopulateFirstNodeState(PastryNode *node) {
 
 	// Set leaf set
 	SetLowerLeaf1(node, 0);
-	SetUpperLeaf1(node, 0);
 	SetLowerLeaf2(node, 0);
-	SetUpperLeaf2(node, 0);
+	SetUpperLeaf1(node, 999999);
+	SetUpperLeaf2(node, 999999);
 
 	// Set routing table.
 	Set0MatchRoutingTable0(node, 0);
@@ -50,10 +52,10 @@ int PopulateFirstNodeState(PastryNode *node) {
 	Set3MatchRoutingTable3(node, 0);
 
 	// Set neighbors
-	SetNeighbor1(node, 0);
-	SetNeighbor2(node, 0);
-	SetNeighbor3(node, 0);
-	SetNeighbor4(node, 0);
+	SetNeighbor1(node, node->NodeId);
+	SetNeighbor2(node, node->NodeId);
+	SetNeighbor3(node, node->NodeId);
+	SetNeighbor4(node, node->NodeId);
 
 	return result;
 }
@@ -80,47 +82,17 @@ int UpdateLeafSet(PastryNode *currNode, PastryNode *newNode) {
 
 	// Check for the lower leaf set.
 	if (newNode->NodeId < currNode->NodeId) {
-		if (newNode->NodeId > GetLowerLeaf1(currNode)) {
-			SetLowerLeaf1(currNode, newNode->NodeId);
-		} else if (newNode->NodeId > GetLowerLeaf2(currNode)) {
+		if (newNode->NodeId > GetLowerLeaf2(currNode)) {
 			SetLowerLeaf2(currNode, newNode->NodeId);
+		} else if (newNode->NodeId > GetLowerLeaf1(currNode)) {
+			SetLowerLeaf1(currNode, newNode->NodeId);
 		}
 	} else if (newNode->NodeId > currNode->NodeId) {
 		// Check for the upper leaf set.
-		if (newNode->NodeId < GetUpperLeaf1(currNode)) {
-			SetLowerLeaf1(currNode, newNode->NodeId);
-		} else if (newNode->NodeId < GetUpperLeaf2(currNode)) {
-			SetLowerLeaf2(currNode, newNode->NodeId);
-		}
-	}
-
-	return result;
-}
-
-int UpdateNeighborhoodSet(PastryNode *currNode, PastryNode *newNode) {
-
-	int result = 0;
-	int newHopCnt = 0;
-	int curHop = 0;
-	int idx = 0;
-
-	newHopCnt = GetHopDistance(currNode->NodeId, newNode->NodeId);
-
-	// Sort the NS array.
-	//qsort(currNode->State.NeighborSet, 4, sizeof(int), compareInt);
-
-	// Iterate through and update the neighborhood set for
-	// the current nodes.
-	for (idx = 0; idx < NEIGHBOR_SET_COLS; idx++) {
-
-		curHop = GetHopDistance(currNode->NodeId, currNode->State.NeighborSet[idx]);
-		//currNode->State.NeighborSet[idx];
-
-		// @@ Check if the current hop is less than the first.
-		// If its smaller, then update the location, and break.
-		if (newHopCnt < curHop) {
-			currNode->State.NeighborSet[idx] = newNode->NodeId;
-			break;
+		if (newNode->NodeId < GetUpperLeaf2(currNode)) {
+			SetUpperLeaf2(currNode, newNode->NodeId);
+		} else if (newNode->NodeId < GetUpperLeaf1(currNode)) {
+			SetUpperLeaf1(currNode, newNode->NodeId);
 		}
 	}
 
@@ -179,6 +151,41 @@ int UpdateRoutingTable(PastryNode *currNode, PastryNode *newNode) {
 	return result;
 }
 
+int UpdateNeighborhoodSet(PastryNode *currNode, PastryNode *newNode) {
+
+	int result = 0;
+	int newHopCnt = 0;
+	int curHop = 0;
+	int idx = 0;
+
+	newHopCnt = GetHopDistance(currNode->NodeId, newNode->NodeId);
+
+	// Sort the NS array.
+	//qsort(currNode->State.NeighborSet, 4, sizeof(int), compareInt);
+
+	// Iterate through and update the neighborhood set for
+	// the current nodes.
+	for (idx = 0; idx < NEIGHBOR_SET_COLS; idx++) {
+
+		curHop = GetHopDistance(currNode->NodeId, currNode->State.NeighborSet[idx]);
+		// @@ Check if the current hop is less than the first.
+		// If its smaller, then update the location, and break.
+		if (newHopCnt < curHop) {
+			currNode->State.NeighborSet[idx] = newNode->NodeId;
+			break;
+		} else if (newHopCnt == curHop) {
+			// Hop count of both the nodes is same, hence
+			// chose the numerically closest node.
+			if (newNode->NodeId < currNode->State.NeighborSet[idx]) {
+				currNode->State.NeighborSet[idx] = newNode->NodeId;
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
 int UpdateNodeState(PastryNode *newNode) {
 
 	int result = 0;
@@ -192,11 +199,11 @@ int UpdateNodeState(PastryNode *newNode) {
 		// Update the leaf set for the current node
 		UpdateLeafSet(currNode, newNode);
 
-		// Update the neighborhood set for the current node
-		UpdateNeighborhoodSet(currNode, newNode);
-
 		// Update the routing table for the current node
 		UpdateRoutingTable(currNode, newNode);
+
+		// Update the neighborhood set for the current node
+		UpdateNeighborhoodSet(currNode, newNode);
 	}
 
 	// Update new node w.r.t to all existing nodes.
@@ -206,11 +213,11 @@ int UpdateNodeState(PastryNode *newNode) {
 		// Update the leaf set for the current node
 		UpdateLeafSet(newNode, currNode);
 
-		// Update the neighborhood set for the current node
-		UpdateNeighborhoodSet(newNode, currNode);
-
 		// Update the routing table for the current node
 		UpdateRoutingTable(newNode, currNode);
+
+		// Update the neighborhood set for the current node
+		UpdateNeighborhoodSet(newNode, currNode);
 	}
 
 	return result;
@@ -220,19 +227,16 @@ int AddPastryNode(PastryNode *node, int nodeId) {
 
 	int result = 0;
 
+	node->NodeId = nodeId;
 	ResetNodeState(node);
 
 	if (NodeIndex == 0) {
 		// No node exist in the network.
-		node->NodeId = nodeId;
-
 		// Populate node routing state.
 		PopulateFirstNodeState(node);
 
 	} else {
 		// Network already contains other nodes.
-		node->NodeId = nodeId;
-
 		// Update node routing state.
 		UpdateNodeState(node);
 	}
@@ -248,8 +252,16 @@ void PrintPastryNetwork() {
 	int i = 0;
 	PastryNode *node;
 
+	// Print network details.
+	printf("%s\n", "*******************************************");
+	printf("%-20s: %2d\n\n", "Total nodes in the network", NodeIndex);
+
+	printf("%s %d %s\n", "(after", NodeIndex, "node insertions)");
+
 	for (i = 0; i < NodeIndex; i++) {
 		node = PastryNetwork[i];
 		PrintNodeState(node);
 	}
+
+
 }

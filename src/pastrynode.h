@@ -26,38 +26,36 @@
 #define TWO_MATCH 2
 #define ONE_MATCH 1
 
-static int Index = 0;
-
 typedef struct NodeState {
 
-	int LowerLeafSet[LOWER_LEAF_SET_COLS];
-	int UpperLeafSet[UPPER_LEAF_SET_COLS];
-	int RoutingTable[ROUTE_TABLE_ROWS][ROUTE_TABLE_COLS];
-	int NeighborSet[NEIGHBOR_SET_COLS];
+	unsigned int LowerLeafSet[LOWER_LEAF_SET_COLS];
+	unsigned int UpperLeafSet[UPPER_LEAF_SET_COLS];
+	unsigned int RoutingTable[ROUTE_TABLE_ROWS][ROUTE_TABLE_COLS];
+	unsigned int NeighborSet[NEIGHBOR_SET_COLS];
 
 } NodeState;
 
 typedef struct PastryNode {
 
-	int NodeId;
+	unsigned int NodeId;
 	NodeState State;
 
 } PastryNode;
 
 // Node Id array
-int NodeIds[PS_NODES];
+unsigned int NodeIds[PS_NODES];
 
 // Function decelerations.
-int  GetRandomNumber(int min, int max);
+unsigned int  GetRandomNumber(unsigned int min, unsigned int max);
 void InitNodeIds();
 void PrintNodeIds();
-int  GetNextNode();
+unsigned int  GetNextNodeId();
 
 // Set leaf-set nodes.
-void SetLowerLeaf1(PastryNode *node, int nodeId);
-void SetLowerLeaf2(PastryNode *node, int nodeId);
-void SetUpperLeaf1(PastryNode *node, int nodeId);
-void SetUpperLeaf2(PastryNode *node, int nodeId);
+void SetLowerLeaf1(PastryNode *node, unsigned int nodeId);
+void SetLowerLeaf2(PastryNode *node, unsigned int nodeId);
+void SetUpperLeaf1(PastryNode *node, unsigned int nodeId);
+void SetUpperLeaf2(PastryNode *node, unsigned int nodeId);
 
 // Get leaf-set nodes.
 int GetLowerLeaf1(PastryNode *node);
@@ -66,10 +64,10 @@ int GetUpperLeaf1(PastryNode *node);
 int GetUpperLeaf2(PastryNode *node);
 
 // Set routing table.
-void Set0MatchRoutingTable0(PastryNode *node, int nodeId);
-void Set0MatchRoutingTable1(PastryNode *node, int nodeId);
-void Set0MatchRoutingTable2(PastryNode *node, int nodeId);
-void Set0MatchRoutingTable3(PastryNode *node, int nodeId);
+void Set0MatchRoutingTable0(PastryNode *node, unsigned int nodeId);
+void Set0MatchRoutingTable1(PastryNode *node, unsigned int nodeId);
+void Set0MatchRoutingTable2(PastryNode *node, unsigned int nodeId);
+void Set0MatchRoutingTable3(PastryNode *node, unsigned int nodeId);
 
 int Get0MatchRoutingTable0(PastryNode *node);
 int Get0MatchRoutingTable1(PastryNode *node);
@@ -77,10 +75,10 @@ int Get0MatchRoutingTable2(PastryNode *node);
 int Get0MatchRoutingTable3(PastryNode *node);
 
 // Set routing table - 1 match
-void Set1MatchRoutingTable0(PastryNode *node, int nodeId);
-void Set1MatchRoutingTable1(PastryNode *node, int nodeId);
-void Set1MatchRoutingTable2(PastryNode *node, int nodeId);
-void Set1MatchRoutingTable3(PastryNode *node, int nodeId);
+void Set1MatchRoutingTable0(PastryNode *node, unsigned int nodeId);
+void Set1MatchRoutingTable1(PastryNode *node, unsigned int nodeId);
+void Set1MatchRoutingTable2(PastryNode *node, unsigned int nodeId);
+void Set1MatchRoutingTable3(PastryNode *node, unsigned int nodeId);
 
 int Get1MatchRoutingTable0(PastryNode *node);
 int Get1MatchRoutingTable1(PastryNode *node);
@@ -88,10 +86,10 @@ int Get1MatchRoutingTable2(PastryNode *node);
 int Get1MatchRoutingTable3(PastryNode *node);
 
 // Set routing table - 2 match
-void Set2MatchRoutingTable0(PastryNode *node, int nodeId);
-void Set2MatchRoutingTable1(PastryNode *node, int nodeId);
-void Set2MatchRoutingTable2(PastryNode *node, int nodeId);
-void Set2MatchRoutingTable3(PastryNode *node, int nodeId);
+void Set2MatchRoutingTable0(PastryNode *node, unsigned int nodeId);
+void Set2MatchRoutingTable1(PastryNode *node, unsigned int nodeId);
+void Set2MatchRoutingTable2(PastryNode *node, unsigned int nodeId);
+void Set2MatchRoutingTable3(PastryNode *node, unsigned int nodeId);
 
 int Get2MatchRoutingTable0(PastryNode *node);
 int Get2MatchRoutingTable1(PastryNode *node);
@@ -99,10 +97,10 @@ int Get2MatchRoutingTable2(PastryNode *node);
 int Get2MatchRoutingTable3(PastryNode *node);
 
 // Set routing table - 3 match
-void Set3MatchRoutingTable0(PastryNode *node, int nodeId);
-void Set3MatchRoutingTable1(PastryNode *node, int nodeId);
-void Set3MatchRoutingTable2(PastryNode *node, int nodeId);
-void Set3MatchRoutingTable3(PastryNode *node, int nodeId);
+void Set3MatchRoutingTable0(PastryNode *node, unsigned int nodeId);
+void Set3MatchRoutingTable1(PastryNode *node, unsigned int nodeId);
+void Set3MatchRoutingTable2(PastryNode *node, unsigned int nodeId);
+void Set3MatchRoutingTable3(PastryNode *node, unsigned int nodeId);
 
 int Get3MatchRoutingTable0(PastryNode *node);
 int Get3MatchRoutingTable1(PastryNode *node);
@@ -110,10 +108,10 @@ int Get3MatchRoutingTable2(PastryNode *node);
 int Get3MatchRoutingTable3(PastryNode *node);
 
 // Set neighbor-set nodes.
-void SetNeighbor1(PastryNode *node, int nodeId);
-void SetNeighbor2(PastryNode *node, int nodeId);
-void SetNeighbor3(PastryNode *node, int nodeId);
-void SetNeighbor4(PastryNode *node, int nodeId);
+void SetNeighbor1(PastryNode *node, unsigned int nodeId);
+void SetNeighbor2(PastryNode *node, unsigned int nodeId);
+void SetNeighbor3(PastryNode *node, unsigned int nodeId);
+void SetNeighbor4(PastryNode *node, unsigned int nodeId);
 
 // Get neighbor-set nodes.
 int GetNeighbor1(PastryNode *node);
@@ -124,6 +122,6 @@ int GetNeighbor4(PastryNode *node);
 // Print the node
 void ResetNodeState(PastryNode *node);
 void PrintNodeState(PastryNode *node);
-int GetHopDistance(int node1, int node2);
+int GetHopDistance(unsigned int node1, unsigned int node2);
 
 #endif /* PASTRYNODE_H_ */

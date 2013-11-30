@@ -10,10 +10,13 @@
 
 //#include "log.h"
 #include "pastrynode.h"
+#include "common.h"
 
-int GetRandomNumber(int min, int max) {
+static int Index = 0;
 
-	int result = 0;
+unsigned int GetRandomNumber(unsigned int min, unsigned int max) {
+
+	unsigned int result = 0;
 	int low_num = 0;
 	int hi_num = 0;
 
@@ -49,7 +52,7 @@ void PrintNodeIds() {
 		printf("Node is: %d\n", NodeIds[i]);
 }
 
-int GetNextNode() {
+unsigned int GetNextNodeId() {
 
 	if (Index == PS_NODES)
 		return NodeIds[PS_NODES];
@@ -58,19 +61,19 @@ int GetNextNode() {
 }
 
 // Set leaf-set nodes.
-void SetLowerLeaf1(PastryNode *node, int nodeId) {
+void SetLowerLeaf1(PastryNode *node, unsigned int nodeId) {
 	node->State.LowerLeafSet[0] = nodeId;
 }
 
-void SetLowerLeaf2(PastryNode *node, int nodeId) {
+void SetLowerLeaf2(PastryNode *node, unsigned int nodeId) {
 	node->State.LowerLeafSet[1] = nodeId;
 }
 
-void SetUpperLeaf1(PastryNode *node, int nodeId) {
+void SetUpperLeaf1(PastryNode *node, unsigned int nodeId) {
 	node->State.UpperLeafSet[0] = nodeId;
 }
 
-void SetUpperLeaf2(PastryNode *node, int nodeId) {
+void SetUpperLeaf2(PastryNode *node, unsigned int nodeId) {
 	node->State.UpperLeafSet[1] = nodeId;
 }
 
@@ -92,19 +95,19 @@ int GetUpperLeaf2(PastryNode *node) {
 }
 
 // Set routing table - 0 match
-void Set0MatchRoutingTable0(PastryNode *node, int nodeId) {
+void Set0MatchRoutingTable0(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[0][0] = nodeId;
 }
 
-void Set0MatchRoutingTable1(PastryNode *node, int nodeId) {
+void Set0MatchRoutingTable1(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[0][1] = nodeId;
 }
 
-void Set0MatchRoutingTable2(PastryNode *node, int nodeId) {
+void Set0MatchRoutingTable2(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[0][2] = nodeId;
 }
 
-void Set0MatchRoutingTable3(PastryNode *node, int nodeId) {
+void Set0MatchRoutingTable3(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[0][3] = nodeId;
 }
 
@@ -125,19 +128,19 @@ int Get0MatchRoutingTable3(PastryNode *node) {
 }
 
 // Set routing table - 1 match
-void Set1MatchRoutingTable0(PastryNode *node, int nodeId) {
+void Set1MatchRoutingTable0(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[1][0] = nodeId;
 }
 
-void Set1MatchRoutingTable1(PastryNode *node, int nodeId) {
+void Set1MatchRoutingTable1(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[1][1] = nodeId;
 }
 
-void Set1MatchRoutingTable2(PastryNode *node, int nodeId) {
+void Set1MatchRoutingTable2(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[1][2] = nodeId;
 }
 
-void Set1MatchRoutingTable3(PastryNode *node, int nodeId) {
+void Set1MatchRoutingTable3(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[1][3] = nodeId;
 }
 
@@ -158,19 +161,19 @@ int Get1MatchRoutingTable3(PastryNode *node) {
 }
 
 // Set routing table - 2 match
-void Set2MatchRoutingTable0(PastryNode *node, int nodeId) {
+void Set2MatchRoutingTable0(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[2][0] = nodeId;
 }
 
-void Set2MatchRoutingTable1(PastryNode *node, int nodeId) {
+void Set2MatchRoutingTable1(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[2][1] = nodeId;
 }
 
-void Set2MatchRoutingTable2(PastryNode *node, int nodeId) {
+void Set2MatchRoutingTable2(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[2][2] = nodeId;
 }
 
-void Set2MatchRoutingTable3(PastryNode *node, int nodeId) {
+void Set2MatchRoutingTable3(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[2][3] = nodeId;
 }
 
@@ -191,19 +194,19 @@ int Get2MatchRoutingTable3(PastryNode *node) {
 }
 
 // Set routing table - 3 match
-void Set3MatchRoutingTable0(PastryNode *node, int nodeId) {
+void Set3MatchRoutingTable0(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[3][0] = nodeId;
 }
 
-void Set3MatchRoutingTable1(PastryNode *node, int nodeId) {
+void Set3MatchRoutingTable1(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[3][1] = nodeId;
 }
 
-void Set3MatchRoutingTable2(PastryNode *node, int nodeId) {
+void Set3MatchRoutingTable2(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[3][2] = nodeId;
 }
 
-void Set3MatchRoutingTable3(PastryNode *node, int nodeId) {
+void Set3MatchRoutingTable3(PastryNode *node, unsigned int nodeId) {
 	node->State.RoutingTable[3][3] = nodeId;
 }
 
@@ -224,19 +227,19 @@ int Get3MatchRoutingTable3(PastryNode *node) {
 }
 
 // Set neighbor-set nodes.
-void SetNeighbor1(PastryNode *node, int nodeId) {
+void SetNeighbor1(PastryNode *node, unsigned int nodeId) {
 	node->State.NeighborSet[0] = nodeId;
 }
 
-void SetNeighbor2(PastryNode *node, int nodeId) {
+void SetNeighbor2(PastryNode *node, unsigned int nodeId) {
 	node->State.NeighborSet[1] = nodeId;
 }
 
-void SetNeighbor3(PastryNode *node, int nodeId) {
+void SetNeighbor3(PastryNode *node, unsigned int nodeId) {
 	node->State.NeighborSet[2] = nodeId;
 }
 
-void SetNeighbor4(PastryNode *node, int nodeId) {
+void SetNeighbor4(PastryNode *node, unsigned int nodeId) {
 	node->State.NeighborSet[3] = nodeId;
 }
 
@@ -261,8 +264,8 @@ void ResetNodeState(PastryNode *node) {
 
 	node->State.LowerLeafSet[0] = 0;
 	node->State.LowerLeafSet[1] = 0;
-	node->State.UpperLeafSet[2] = 0;
-	node->State.UpperLeafSet[3] = 0;
+	node->State.UpperLeafSet[0] = 999999;
+	node->State.UpperLeafSet[1] = 999999;
 
 	node->State.RoutingTable[0][0] = 0;
 	node->State.RoutingTable[0][1] = 0;
@@ -284,15 +287,14 @@ void ResetNodeState(PastryNode *node) {
 	node->State.RoutingTable[3][2] = 0;
 	node->State.RoutingTable[3][3] = 0;
 
-	node->State.NeighborSet[0] = 0;
-	node->State.NeighborSet[1] = 0;
-	node->State.NeighborSet[2] = 0;
-	node->State.NeighborSet[3] = 0;
+	node->State.NeighborSet[0] = node->NodeId;
+	node->State.NeighborSet[1] = node->NodeId;
+	node->State.NeighborSet[2] = node->NodeId;
+	node->State.NeighborSet[3] = node->NodeId;
 }
 
 void PrintNodeState(PastryNode *node) {
 
-	printf("\n");
 	printf("%s\n", "-------------------------------------------");
 	printf("%-20s\n", "Pastry Node");
 	printf("%8d\n", node->NodeId);
@@ -301,8 +303,8 @@ void PrintNodeState(PastryNode *node) {
 	printf("%-20s\n", "Leaf Set");
 	printf("%8d%8d%8d%8d\n", node->State.LowerLeafSet[0],
 							 node->State.LowerLeafSet[1],
-							 node->State.UpperLeafSet[2],
-							 node->State.UpperLeafSet[3]);
+							 node->State.UpperLeafSet[0],
+							 node->State.UpperLeafSet[1]);
 
 	printf("\n");
 	printf("%-20s\n", "Routing Table");
@@ -337,11 +339,15 @@ void PrintNodeState(PastryNode *node) {
 }
 
 // Get hop distance.
-int GetHopDistance(int node1, int node2) {
+int GetHopDistance(unsigned int nodeId1, unsigned int nodeId2) {
 
 	int hopCount = 0;
 
-	hopCount = (node1 * node2) % 10;
+	if (nodeId1 == nodeId2) {
+		return SAME_NODE_ID;
+	} else {
+		hopCount = (nodeId1 * nodeId2) % MAX_HOPS;
+	}
 
 	return hopCount;
 }
